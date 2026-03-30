@@ -14,7 +14,9 @@
 //   celsiusToFahrenheit([0, 100, 37]) → [32, 212, 98.6]
 //   celsiusToFahrenheit([-40]) → [-40]
 function celsiusToFahrenheit(temps) {
-  // Tu codigo aqui
+  return temps.map(function (c) {
+    return c * 9 / 5 + 32;
+  });
 }
 
 // 2. addFullName(people)
@@ -25,7 +27,13 @@ function celsiusToFahrenheit(temps) {
 //   addFullName([{ firstName: "Ana", lastName: "Garcia" }])
 //   → [{ firstName: "Ana", lastName: "Garcia", fullName: "Ana Garcia" }]
 function addFullName(people) {
-  // Tu codigo aqui
+  return people.map(function (person) {
+    return {
+      firstName: person.firstName,
+      lastName: person.lastName,
+      fullName: person.firstName + " " + person.lastName
+    };
+  });
 }
 
 // 3. getAcronyms(phrases)
@@ -36,7 +44,13 @@ function addFullName(people) {
 //   getAcronyms(["as soon as possible", "frequently asked questions"]) → ["ASAP", "FAQ"]
 //   getAcronyms(["do it yourself"]) → ["DIY"]
 function getAcronyms(phrases) {
-  // Tu codigo aqui
+  return phrases.map(function (phrase) {
+    return phrase
+      .split(" ")
+      .map(function (word) { return word[0]; })
+      .join("")
+      .toUpperCase();
+  });
 }
 
 // 4. applyDiscount(products, discount)
@@ -49,7 +63,13 @@ function getAcronyms(phrases) {
 //   applyDiscount([{ name: "Cafe", price: 5 }], 50)
 //   → [{ name: "Cafe", price: 2.5, originalPrice: 5 }]
 function applyDiscount(products, discount) {
-  // Tu codigo aqui
+  return products.map(function (product) {
+    return {
+      name: product.name,
+      price: product.price * (1 - discount / 100),
+      originalPrice: product.price
+    };
+  });
 }
 
 
@@ -64,7 +84,9 @@ function applyDiscount(products, discount) {
 //   getInStock([{ name: "A", stock: 5 }, { name: "B", stock: 0 }])
 //   → [{ name: "A", stock: 5 }]
 function getInStock(products) {
-  // Tu codigo aqui
+  return products.filter(function (product) {
+    return product.stock > 0;
+  });
 }
 
 // 6. getUniqueValues(array)
@@ -75,7 +97,9 @@ function getInStock(products) {
 //   getUniqueValues([1, 2, 2, 3, 3, 3]) → [1, 2, 3]
 //   getUniqueValues(["a", "b", "a", "c"]) → ["a", "b", "c"]
 function getUniqueValues(array) {
-  // Tu codigo aqui
+  return array.filter(function (item, index) {
+    return array.indexOf(item) === index;
+  });
 }
 
 // 7. searchByName(items, query)
@@ -85,7 +109,9 @@ function getUniqueValues(array) {
 //   searchByName([{ name: "JavaScript" }, { name: "Java" }, { name: "Python" }], "java")
 //   → [{ name: "JavaScript" }, { name: "Java" }]
 function searchByName(items, query) {
-  // Tu codigo aqui
+  return items.filter(function (item) {
+    return item.name.toLowerCase().indexOf(query.toLowerCase()) !== -1;
+  });
 }
 
 // 8. getInRange(numbers, min, max)
@@ -95,7 +121,9 @@ function searchByName(items, query) {
 //   getInRange([5, 10, 15, 20, 25], 10, 20) → [10, 15, 20]
 //   getInRange([1, 2, 3, 4, 5], 2, 4) → [2, 3, 4]
 function getInRange(numbers, min, max) {
-  // Tu codigo aqui
+  return numbers.filter(function (num) {
+    return num >= min && num <= max;
+  });
 }
 
 
@@ -111,7 +139,9 @@ function getInRange(numbers, min, max) {
 //   getLongestString(["sol", "estrella", "luna"]) → "estrella"
 //   getLongestString(["ab", "cd"]) → "ab"
 function getLongestString(strings) {
-  // Tu codigo aqui
+  return strings.reduce(function (longest, current) {
+    return current.length > longest.length ? current : longest;
+  }, "");
 }
 
 // 10. buildObject(keys, values)
@@ -122,7 +152,10 @@ function getLongestString(strings) {
 //   buildObject(["name", "age"], ["Ana", 25]) → { name: "Ana", age: 25 }
 //   buildObject(["a", "b", "c"], [1, 2, 3]) → { a: 1, b: 2, c: 3 }
 function buildObject(keys, values) {
-  // Tu codigo aqui
+  return keys.reduce(function (acc, key, index) {
+    acc[key] = values[index];
+    return acc;
+  }, {});
 }
 
 // 11. calculateAverage(numbers)
@@ -133,7 +166,11 @@ function buildObject(keys, values) {
 //   calculateAverage([10, 20, 30]) → 20
 //   calculateAverage([]) → 0
 function calculateAverage(numbers) {
-  // Tu codigo aqui
+  if (numbers.length === 0) return 0;
+  var sum = numbers.reduce(function (acc, num) {
+    return acc + num;
+  }, 0);
+  return sum / numbers.length;
 }
 
 // 12. mergeObjects(arrayOfObjects)
@@ -144,7 +181,12 @@ function calculateAverage(numbers) {
 //   mergeObjects([{ a: 1 }, { b: 2 }, { a: 3, c: 4 }]) → { a: 3, b: 2, c: 4 }
 //   mergeObjects([{ x: 10 }, { y: 20 }]) → { x: 10, y: 20 }
 function mergeObjects(arrayOfObjects) {
-  // Tu codigo aqui
+  return arrayOfObjects.reduce(function (acc, obj) {
+    Object.keys(obj).forEach(function (key) {
+      acc[key] = obj[key];
+    });
+    return acc;
+  }, {});
 }
 
 
@@ -164,7 +206,9 @@ function mergeObjects(arrayOfObjects) {
 //   )
 //   → ["GARCIA, Ana"]
 function getTopStudents(students, minGrade) {
-  // Tu codigo aqui
+  return students
+    .filter(function (s) { return s.grade >= minGrade; })
+    .map(function (s) { return s.lastName.toUpperCase() + ", " + s.firstName; });
 }
 
 // 14. getTotalCartPrice(cart)
@@ -178,7 +222,9 @@ function getTopStudents(students, minGrade) {
 //   ])
 //   → 25
 function getTotalCartPrice(cart) {
-  // Tu codigo aqui
+  return cart
+    .map(function (item) { return item.price * item.quantity; })
+    .reduce(function (acc, subtotal) { return acc + subtotal; }, 0);
 }
 
 // 15. getWordFrequencies(text)
@@ -190,5 +236,16 @@ function getTotalCartPrice(cart) {
 //   getWordFrequencies("Hola mundo hola") → [{ word: "hola", count: 2 }, { word: "mundo", count: 1 }]
 //   getWordFrequencies("a b a b a") → [{ word: "a", count: 3 }, { word: "b", count: 2 }]
 function getWordFrequencies(text) {
-  // Tu codigo aqui
+  if (text === "") return [];
+
+  var words = text.toLowerCase().split(" ");
+
+  var counts = words.reduce(function (acc, word) {
+    acc[word] = (acc[word] || 0) + 1;
+    return acc;
+  }, {});
+
+  return Object.keys(counts)
+    .map(function (word) { return { word: word, count: counts[word] }; })
+    .sort(function (a, b) { return b.count - a.count; });
 }
